@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR=hooks/post-update.d
+
+[ -d $DIR ] || exit 0
+
+# all output from these "hooklets" must go to STDERR to avoid confusing the client
+
+exec >&2
+
+SCRIPT="$DIR/post-update.$GL_REPO"
+[ -f $SCRIPT ] && [ -x $SCRIPT ] || exit 0
+
+"$SCRIPT" "$@"
+
+exit 0

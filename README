@@ -1,0 +1,13 @@
+www-data user runs the web server
+git is the gitolite user
+
+git is also in www-data group
+
+/deploydir should be rwxrwSr-x
+chmod g+s /deploydir
+
+place files into /var/gitolite/hooks/common or where gitolite's common hooks are
+make sure files are executable.
+chmod +x post-update
+chmod +x post-update.d/post-update.reponame
+

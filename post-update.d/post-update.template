@@ -1,0 +1,36 @@
+#!/bin/bash
+
+$REPO_NAME="AREPO"
+
+# check repo name just in case
+[ "$GL_REPO" = $REPO_NAME ] || exit 0
+
+# get branch name
+BRANCH=`echo $1 | sed -e 's/refs\/heads\/\(.*\)/\1/'`
+BASEDIR=/deploydir
+
+case "$BRANCH" in
+		release)
+            # 
+			INSTALL_DIR="$BASEDIR/release_install_dir"
+			;;
+		test)
+			INSTALL_DIR="$BASEDIR/test_install_dir"
+			;;
+		*)
+			echo "exit" 
+			exit 0
+			;;
+esac
+
+# www-data group should be able to access what git.
+UMASK=`umask`
+umask 0002
+mkdir -p $INSTALL_DIR
+
+git archive $BRANCH | tar -x -C $INSTALL_DIR 
+
+umask $UMASK
+
+exit 0
+
